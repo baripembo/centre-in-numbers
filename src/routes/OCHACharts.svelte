@@ -98,7 +98,6 @@
     width: 20%;
   }
   h5 {
-    font-size: 12px;
     line-height: 15px;
     margin: -30px 0 0;
     text-align: center;
