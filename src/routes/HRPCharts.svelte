@@ -29,7 +29,7 @@
   onMount(async () => {
     //small multiples data by PIN
     hrpData = await csv(userData, function(data) {
-      if (data['#country+name']==='occupied Palestinian territory') data['#country+name'] = 'State of Palestine';
+      if (data['#country+name']==='Venezuela') data['#country+name'] = 'Venezuela (Bolivarian Republic of)';
       if (data['#country+name']==='Syria') data['#country+name'] = 'Syrian Arab Republic';
       data['#users+unique'] = +data['#users+unique'];
       data['#date'] = new Date(data['#date']);
@@ -43,8 +43,6 @@
     perComplete = await csv(perCompleteData).then((data) => {
       return group(data, d => d['#location']);
     });
-
-    console.log('--',perComplete)
 
 
 
@@ -98,7 +96,7 @@
 
 
   // $: console.log('hrpData=', hrpData)
-  console.log('countryData=', countryData)
+  //console.log('countryData=', countryData)
   // $: console.log('fullExtents=', fullExtents)
 </script>
 

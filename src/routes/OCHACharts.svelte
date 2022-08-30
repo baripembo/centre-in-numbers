@@ -28,21 +28,21 @@
     });
 
     const properties = ['HDX', 'unocha.org', 'HPC: FTS', 'CERF', 'HumanitarianResponse.info'];
-    $: ochaData = ochaData.filter(d => properties.includes(d.Service));
+    ochaData = ochaData.filter(d => properties.includes(d.Service));
 
     //calculate scale for all small multiples
-    $: fullExtents = calcExtents(ochaData, extentGetters);
+    fullExtents = calcExtents(ochaData, extentGetters);
 
     //group data by service
-    $: serviceData = flatGroup(ochaData, d => d.Service);
+    serviceData = flatGroup(ochaData, d => d.Service);
     
     //find max val by country
-    $: serviceData.forEach(function(service) {
+    serviceData.forEach(function(service) {
       service.push(max(service[1], d => d['Users']))
     });
 
     //sort by high to low val
-    $: serviceData.sort((a, b) => b[2] - a[2]);
+    serviceData.sort((a, b) => b[2] - a[2]);
   });
 </script>
 
