@@ -1,7 +1,7 @@
 {
-  "name": "centre-in-numbers",
-  "version": "1.0.0",
-  "homepage": "https://github.com/baripembo/centre-in-numbers",
+  "name": "svelte-template",
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
