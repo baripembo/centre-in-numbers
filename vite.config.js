@@ -5,12 +5,11 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/centre-in-numbers/',
+  //base: "/centre-in-numbers/",
   plugins: [svelte(), dsv()],
   resolve: {
     alias: {
-      "$components": path.resolve("./src/components"),
-      "$data": path.resolve("./data")
+      "$components": path.resolve("./src/components")
     }
   }
 })

@@ -18,22 +18,21 @@
   let fullExtents, fundingExtents;
 
   const extentGetters = {
-    x: d => d['Date'],
-    y: d => d['UniqueUsers']
+    x: d => d['#date'],
+    y: d => d['#users+unique']
   };
 
   const perCompleteData = 'https://proxy.hxlstandard.org/data.csv?dest=data_edit&strip-headers=on&tagger-match-all=on&tagger-01-header=date&tagger-01-tag=%23date&tagger-02-header=iso3&tagger-02-tag=%23iso&tagger-03-header=location&tagger-03-tag=%23location&tagger-04-header=percentage+data+complete&tagger-04-tag=%23pct%2Bcomplete&tagger-05-header=percentage+data+incomplete&tagger-05-tag=%23pct%2Bincomplete&tagger-06-header=percentage+no+data&tagger-06-tag=%23pct%2Bnodata&header-row=1&url=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2F1KJ4U6rc0ROWzpfHnaSlpRijF-t8T0Ze4Pq2sBjAqKrc%2Fedit%3Fpli%3D1%23gid%3D579688831';
 
-
+  const userData = 'https://proxy.hxlstandard.org/data.csv?dest=data_edit&strip-headers=on&tagger-match-all=on&tagger-01-header=date&tagger-01-tag=%23date&tagger-02-header=countryname&tagger-02-tag=%23country%2Bname&tagger-03-header=uniqueusers&tagger-03-tag=%23users%2Bunique&tagger-04-header=regional+response&tagger-04-tag=%23users%2Bregional%2Bresponse&tagger-05-header=including+regional+response&tagger-05-tag=%23users%2Bunique%2Bwith%2Bregional%2Bresponse&header-row=1&url=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vR8h_9uY_SCu9FTZr6Mq5htrUAF7eWXdme-rUsVbWgX9cF2hTvkmrWTisMmKoDAR462SJbDh9FIzwSf%2Fpub%3Fgid%3D248534333%26single%3Dtrue%26output%3Dcsv';
 
   onMount(async () => {
     //small multiples data by PIN
-    hrpData = await csv('./data/hrp-user-growth.csv', function(data) {//HRPTopTen_UsersUnique_PIN
-      if (data['CountryName']==='occupied Palestinian territory') data['CountryName'] = 'State of Palestine';
-      if (data['CountryName']==='Syria') data['CountryName'] = 'Syrian Arab Republic';
-      if (data['CountryName']==='Democratic Republic of Congo') data['CountryName'] = 'Democratic Republic of the Congo';
-      data['UniqueUsers'] = +data['UniqueUsers'];
-      data['Date'] = new Date(data['Date']);
+    hrpData = await csv(userData, function(data) {
+      if (data['#country+name']==='occupied Palestinian territory') data['#country+name'] = 'State of Palestine';
+      if (data['#country+name']==='Syria') data['#country+name'] = 'Syrian Arab Republic';
+      data['#users+unique'] = +data['#users+unique'];
+      data['#date'] = new Date(data['#date']);
       return data;
     }).then((data) => {
       return data;
@@ -52,20 +51,20 @@
     //filter for HRP countries
     const hrpList = ['Afghanistan','Burkina Faso','Burundi','Cameroon','Central African Republic','Chad','Colombia','Democratic Republic of the Congo','Ethiopia','Haiti','Iraq','Libya','Mali','Mozambique','Myanmar','Niger','Nigeria','Somalia','South Sudan','State of Palestine','Sudan','Syrian Arab Republic','Ukraine','Venezuela (Bolivarian Republic of)','Yemen'];
 
-    $: hrpData = hrpData.filter(d => hrpList.includes(d.CountryName));
+    $: hrpData = hrpData.filter(d => hrpList.includes(d['#country+name']));
 
 
     //calculate scale for all small multiples
     $: fullExtents = calcExtents(hrpData, extentGetters);
 
     //group data by country
-    $: countryData = [...group(hrpData, d => d.CountryName)];
+    $: countryData = [...group(hrpData, d => d['#country+name'])];
     
     //find max val by country
     $: countryData.forEach(function(country) {
       let c = perComplete.get(country[0]);
       let per = (c !== undefined) ? c[0]['#pct+complete'] : 0;
-      country.push(max(country[1], d => d['UniqueUsers']));
+      country.push(max(country[1], d => d['#users+unique']));
       country.push(+per);
     });
 
@@ -114,8 +113,8 @@
         <LayerCake
           padding={{ top: 30, right: 20, bottom: 0, left: 20 }}
           data={ country[1] }
-          x='Date'
-          y='UniqueUsers'
+          x='#date'
+          y='#users+unique'
           xScale={ scaleTime() }
           yDomain={fullExtents.y}
         >
