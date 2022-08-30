@@ -2,8 +2,8 @@
 <p>Welcome to my website</p> -->
 
 <script>
-import HRPCharts from '../routes/HRPCharts.svelte';
-import OCHACharts from '../routes/OCHACharts.svelte';
+import HRPCharts from '$routes/HRPCharts.svelte';
+import OCHACharts from '$routes/OCHACharts.svelte';
 
 </script>
 

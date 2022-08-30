@@ -9,7 +9,8 @@ export default defineConfig({
   plugins: [svelte(), dsv()],
   resolve: {
     alias: {
-      "$components": path.resolve("./src/components")
+      "$components": path.resolve("./src/components"),
+      "$routes": path.resolve("./src/routes")
     }
   }
 })

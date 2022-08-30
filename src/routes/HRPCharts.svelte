@@ -44,24 +44,24 @@
       return group(data, d => d['#location']);
     });
 
-    $: console.log('--',perComplete)
+    console.log('--',perComplete)
 
 
 
     //filter for HRP countries
     const hrpList = ['Afghanistan','Burkina Faso','Burundi','Cameroon','Central African Republic','Chad','Colombia','Democratic Republic of the Congo','Ethiopia','Haiti','Iraq','Libya','Mali','Mozambique','Myanmar','Niger','Nigeria','Somalia','South Sudan','State of Palestine','Sudan','Syrian Arab Republic','Ukraine','Venezuela (Bolivarian Republic of)','Yemen'];
 
-    $: hrpData = hrpData.filter(d => hrpList.includes(d['#country+name']));
+    hrpData = hrpData.filter(d => hrpList.includes(d['#country+name']));
 
 
     //calculate scale for all small multiples
-    $: fullExtents = calcExtents(hrpData, extentGetters);
+    fullExtents = calcExtents(hrpData, extentGetters);
 
     //group data by country
-    $: countryData = [...group(hrpData, d => d['#country+name'])];
+    countryData = [...group(hrpData, d => d['#country+name'])];
     
     //find max val by country
-    $: countryData.forEach(function(country) {
+    countryData.forEach(function(country) {
       let c = perComplete.get(country[0]);
       let per = (c !== undefined) ? c[0]['#pct+complete'] : 0;
       country.push(max(country[1], d => d['#users+unique']));
@@ -69,7 +69,7 @@
     });
 
     //sort by high to low val
-    $: countryData.sort((a, b) => {
+    countryData.sort((a, b) => {
       return b[2] - a[2];
     });
 
@@ -98,7 +98,7 @@
 
 
   // $: console.log('hrpData=', hrpData)
-  $: console.log('countryData=', countryData)
+  console.log('countryData=', countryData)
   // $: console.log('fullExtents=', fullExtents)
 </script>
 
